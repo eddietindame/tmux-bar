@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/opt/homebrew/bin/bash
 
 declare -A colors=(
   [base]="#1E1E2E" # base

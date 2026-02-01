@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/opt/homebrew/bin/bash
 export LC_ALL=en_US.UTF-8
 current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
@@ -106,12 +106,20 @@ set_status_bar() {
 }
 
 set_status_left() {
-  tmux set-option -g status-left "#[bg=${colors[hostname]},fg=${colors[base]}]#{?client_prefix,#[bg=${colors[prefix]}],} ${left_icon} #H #[fg=${colors[hostname]},bg=${colors[background]}]#{?client_prefix,#[fg=${colors[prefix]}],}${sep_left} "
+  if [[ "$transparent_mode" == "on" ]]; then
+    tmux set-option -g status-left "#[bg=${colors[hostname]},fg=${colors[base]}]#{?client_prefix,#[bg=${colors[prefix]}],} ${left_icon} #S #[fg=${colors[hostname]},bg=default]#{?client_prefix,#[fg=${colors[prefix]}],}${sep_left}#[default] "
+  else
+    tmux set-option -g status-left "#[bg=${colors[hostname]},fg=${colors[base]}]#{?client_prefix,#[bg=${colors[prefix]}],} ${left_icon} #S #[fg=${colors[hostname]},bg=${colors[background]}]#{?client_prefix,#[fg=${colors[prefix]}],}${sep_left} "
+  fi
 }
 
 set_window_options() {
-  tmux set-window-option -g window-status-current-format "#[fg=${colors[active]},bg=${colors[background]}]${divider}#[fg=${colors[base]},bg=${colors[active]}] ${on_icon}  #W #[fg=${colors[active]},bg=${colors[background]}]${sep_left}"
-  tmux set-window-option -g window-status-format "#[fg=${colors[inactive]},bg=${colors[background]}]${divider}#[fg=${colors[base]},bg=${colors[inactive]}] ${off_icon}  #W #[fg=${colors[inactive]},bg=${colors[background]}]${sep_left}"
+  local bg="${colors[background]}"
+  if [[ "$transparent_mode" == "on" ]]; then
+    bg="default"
+  fi
+  tmux set-window-option -g window-status-current-format "#[fg=${colors[active]},bg=${bg}]${divider}#[fg=${colors[base]},bg=${colors[active]}] ${on_icon}  #W #[fg=${colors[active]},bg=${bg}]${sep_left}"
+  tmux set-window-option -g window-status-format "#[fg=${colors[inactive]},bg=${bg}]${divider}#[fg=${colors[base]},bg=${colors[inactive]}] ${off_icon}  #W #[fg=${colors[inactive]},bg=${bg}]${sep_left}"
   tmux set-window-option -g window-status-activity-style "bold"
   tmux set-window-option -g window-status-bell-style "bold"
 }

@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/opt/homebrew/bin/bash
 
 # Sistema de temas para tmux powerline bar
 # Múltiples esquemas de colores incluyendo Catppuccin variants y temas populares
