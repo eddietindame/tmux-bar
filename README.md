@@ -21,10 +21,12 @@ Tmux Powerline Bar is a Tmux plugin that enhances the status bar visualization, 
 If you use [Tmux Plugin Manager (TPM)](https://github.com/tmux-plugins/tpm), add this to your `.tmux.conf`:
 
 ```bash
-set -g @plugin 'armando-rios/tmux'
+set -g @plugin 'eddietindame/tmux-bar'
 ```
 
 Then reload tmux and run `prefix + I` to install it.
+
+> **Note (macOS):** This plugin requires Bash 4+. macOS ships with Bash 3.2, so you'll need to install a newer version via Homebrew (`brew install bash`). The plugin scripts use `/opt/homebrew/bin/bash`.
 
 ## ⚙️ Configuration
 You can customize the plugin by adding options to your `.tmux.conf`:
@@ -34,6 +36,10 @@ set -g @tmux_transparent "on"         # Enable transparency
 set -g @tmux_status_show_clock "on"   # Show clock
 set -g @tmux_status_show_sysinfo "on" # Show CPU and RAM usage
 set -g @tmux_status_show_cwd "on"     # Show current directory
+
+# Left status element (session name or hostname)
+set -g @tmux_left_element "session"   # Show session name (default)
+set -g @tmux_left_element "hostname"  # Show hostname
 
 # Customize element order and visibility
 set -g @tmux_status_format "cwd|sysinfo|clock"  # Default order

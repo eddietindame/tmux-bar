@@ -43,6 +43,7 @@ show_clock=$(tmux show-option -gqv @tmux_status_show_clock)
 show_sysinfo=$(tmux show-option -gqv @tmux_status_show_sysinfo)
 status_format=$(tmux show-option -gqv @tmux_status_format)
 theme=$(tmux show-option -gqv @tmux_theme)
+left_element=$(tmux show-option -gqv @tmux_left_element)
 
 # Establecer valores por defecto si no están configurados
 [[ -z "$transparent_mode" ]] && transparent_mode="off"
@@ -51,6 +52,7 @@ theme=$(tmux show-option -gqv @tmux_theme)
 [[ -z "$show_sysinfo" ]] && show_sysinfo="on"
 [[ -z "$status_format" ]] && status_format="cwd|sysinfo|clock"
 [[ -z "$theme" ]] && theme="mocha"
+[[ -z "$left_element" ]] && left_element="session"
 
 # Inicializar array de colores y cargar tema
 declare -A colors
@@ -106,10 +108,15 @@ set_status_bar() {
 }
 
 set_status_left() {
+  local left_text="#S"
+  if [[ "$left_element" == "hostname" ]]; then
+    left_text="#H"
+  fi
+
   if [[ "$transparent_mode" == "on" ]]; then
-    tmux set-option -g status-left "#[bg=${colors[hostname]},fg=${colors[base]}]#{?client_prefix,#[bg=${colors[prefix]}],} ${left_icon} #S #[fg=${colors[hostname]},bg=default]#{?client_prefix,#[fg=${colors[prefix]}],}${sep_left}#[default] "
+    tmux set-option -g status-left "#[bg=${colors[hostname]},fg=${colors[base]}]#{?client_prefix,#[bg=${colors[prefix]}],} ${left_icon} ${left_text} #[fg=${colors[hostname]},bg=default]#{?client_prefix,#[fg=${colors[prefix]}],}${sep_left}#[default] "
   else
-    tmux set-option -g status-left "#[bg=${colors[hostname]},fg=${colors[base]}]#{?client_prefix,#[bg=${colors[prefix]}],} ${left_icon} #S #[fg=${colors[hostname]},bg=${colors[background]}]#{?client_prefix,#[fg=${colors[prefix]}],}${sep_left} "
+    tmux set-option -g status-left "#[bg=${colors[hostname]},fg=${colors[base]}]#{?client_prefix,#[bg=${colors[prefix]}],} ${left_icon} ${left_text} #[fg=${colors[hostname]},bg=${colors[background]}]#{?client_prefix,#[fg=${colors[prefix]}],}${sep_left} "
   fi
 }
 
